@@ -7,6 +7,26 @@ Welcome to the **NeetCode 150** repository! This repository contains solutions a
 - **🆓 Free Debugging:** Easily debug your solutions for free using the Bun extension in VSCode.
 - **📚 Structured Learning:** Focus on problem-solving with 150 handpicked problems, divided into 22 categories, covering various problem types.
 
+## ⚡ Quick Start
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/lyn-boyu/neetcode-150.git
+   ```
+
+2. Switch to the `problems` branch and create your own branch for solutions:
+
+   ```bash
+   git checkout problems && git checkout -b my-solutions
+   ```
+
+3. Install dependencies and start TDD:
+
+   ```bash
+   bun install && bun run tdd
+   ```
+
 ## 🗂️ Directory Structure
 
 The repository is organized into the following problem categories:
@@ -58,12 +78,15 @@ curl -fsSL https://bun.sh/install | bash
 2. Go to the Extensions view by clicking on the Extensions icon in the Activity Bar or press `Ctrl+Shift+X` (or `Cmd+Shift+X` on Mac).
 3. Search for "Bun for Visual Studio Code" and install the extension by Oven.
 
-### 4. Running Tests
+### 4. Branching 🌿
 
-To run the tests and get instant feedback, use the following command:
+- **problems:** Contains templates with empty solution functions and test cases.
+- **solutions:** Contains working solutions that pass all test cases.
+
+To start practicing, clone the repository or fork it, then create a new branch from the `problems` branch:
 
 ```bash
-bun run dev
+git checkout -b my-practice-branch
 ```
 
 This will watch for changes and automatically run your tests as you work.
@@ -76,19 +99,19 @@ You can easily debug your code using the Bun extension in VSCode:
 2. Switch to `index.test.ts`.
 3. Open the command palette using `Ctrl+Shift+P` (or `Cmd+Shift+P` on Mac) and select **Bun: Debug**.
 
-### 6. Branching 🌿
+### 6. Running Tests
 
-- **problems:** Contains templates with empty solution functions and test cases.
-- **solutions:** Contains working solutions that pass all test cases.
-
-To start practicing, clone the repository or fork it, then create a new branch from the `problems` branch:
+To run the tests and get instant feedback, use the following command:
 
 ```bash
-git checkout -b my-practice-branch
+bun run test
 ```
+
 
 Make sure to commit your changes as you progress through the problems to track your learning journey.
 
 ---
 
 Happy coding! 😄
+
+ 
