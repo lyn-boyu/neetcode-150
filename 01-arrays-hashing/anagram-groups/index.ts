@@ -34,6 +34,19 @@ export class Solution {
      * @return {string[][]}
      */
     groupAnagrams(strs: string[]): string[][] {
-        return []
+        const generateKey = (str: string) => {
+            return str.split('').sort().join('')
+        }
+
+        const map = new Map<string, string[]>()
+
+        strs.forEach((str) => {
+            const key = generateKey(str)
+            const list = map.get(key) ?? []
+            list.push(str)
+            map.set(key, list)
+        })
+
+        return Array.from(map.values())
     }
 }
