@@ -37,115 +37,109 @@
  * - 0 <= key <= 1000
  * - 0 <= value <= 1000
  */
-
-
 class Node {
-    key: number
-    value: number
-    next: Node | null
-    prev: Node | null
+    key: number;
+    value: number;
+    next: Node | null;
+    prev: Node | null;
+
     constructor(key: number, value: number) {
-        this.key = key
-        this.value = value
-        this.next = null
-        this.prev = null
+        this.key = key;
+        this.value = value;
+        this.next = null;
+        this.prev = null;
     }
 }
 
 class LRUCache {
     private capacity: number;
     private cache: Map<number, Node>;
-    private head: Node | null
-    // put exceed capacity will use tail to remove 
-    private tail: Node | null
+    private head: Node | null; // points to the most recently used node
+    private tail: Node | null; // points to the least recently used node
 
     constructor(capacity: number) {
         this.capacity = capacity;
         this.cache = new Map<number, Node>();
-        this.head = null
-        this.tail = null
+        this.head = null;
+        this.tail = null;
     }
 
-    private removeNode(node: Node) {
-        // remove node from  prev node
+    private removeNode(node: Node): void {
+        // Detach the node from the doubly linked list
+
+        // If node has a previous node, update its next pointer
         if (node.prev) {
-            node.prev.next = node.next
+            node.prev.next = node.next;
         } else {
-            // if it is head node update this.head
-            this.head = node.next
+            // If it's the head node, update the head reference
+            this.head = node.next;
         }
 
+        // If node has a next node, update its previous pointer
         if (node.next) {
-            // disconnect with next node 
-            node.next.prev = node.prev
+            node.next.prev = node.prev;
         } else {
-            // if it is tail node update this.tail
-            this.tail = node.prev
+            // If it's the tail node, update the tail reference
+            this.tail = node.prev;
         }
-
     }
 
-    private insertAtFront(node: Node) {
-        // update node next and prev
-        node.next = this.head
-        node.prev = null
-        // update head
+    private insertAtFront(node: Node): void {
+        // Insert the node at the front of the doubly linked list
+
+        node.next = this.head;
+        node.prev = null;
+
+        // If head exists, update its previous pointer
         if (this.head) {
-            this.head.prev = node
+            this.head.prev = node;
         }
-        this.head = node
 
-        // update if there is no tail
+        // Set the new node as the head
+        this.head = node;
+
+        // If there's no tail (i.e., list was empty), set the tail to this node
         if (!this.tail) {
-            this.tail = node
+            this.tail = node;
         }
-
     }
 
-    // return -1 if key is not exist in the cache
     get(key: number): number {
-        // find node in map return -1 if not exist 
-        if (!this.cache.has(key)) return -1
+        // Return -1 if the key is not in the cache
+        if (!this.cache.has(key)) return -1;
 
         const node = this.cache.get(key)!;
-        // update linked list
-        // - remove node from list
-        this.removeNode(node)
-        // - move node to head 
-        this.insertAtFront(node)
 
-        // return value
-        return node.value
+        // Move the accessed node to the front (most recently used)
+        this.removeNode(node);
+        this.insertAtFront(node);
+
+        // Return the value of the node
+        return node.value;
     }
 
     put(key: number, value: number): void {
         if (this.cache.has(key)) {
-            // if cache exist same key 
+            // If the key exists, remove the old node and update its value
             const node = this.cache.get(key)!;
-            // delete node from list
-            this.removeNode(node)
-            // update value
-            node.value = value
-            // insert node atFront
-            this.insertAtFront(node)
+            this.removeNode(node);
+            node.value = value;
+            this.insertAtFront(node);
         } else {
-            const newNode = new Node(key, value)
-            // if it is a new node
+            // If the key does not exist, create a new node
+            const newNode = new Node(key, value);
+
+            // If the cache has exceeded its capacity, remove the least recently used (tail) node
             if (this.cache.size >= this.capacity) {
-                // case1: the capacity is exceeded
-                // - remove the tail node from list
-                // - remove the tail node from the map
                 if (this.tail) {
-                    // delete cache first
-                    this.cache.delete(this.tail?.key)
-                    this.removeNode(this.tail)
+                    this.cache.delete(this.tail.key); // Remove from cache map
+                    this.removeNode(this.tail); // Remove from linked list
                 }
             }
-            // case2: the capacity is not exceed
-            // - add to map
-            this.cache.set(key, newNode)
-            // - add to front
-            this.insertAtFront(newNode)
+
+            // Add the new node to the front (most recently used)
+            this.cache.set(key, newNode);
+            this.insertAtFront(newNode);
         }
     }
 }
