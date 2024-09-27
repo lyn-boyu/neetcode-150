@@ -26,6 +26,25 @@
  * - Move the pointer pointing to the shorter bar to potentially find a taller bar.
  */
 
-export function maxArea(height: number[]): number {
-    return -1
+export function maxArea(heights: number[]): number {
+
+    let left = 0
+    let right = heights.length - 1
+    let maxArea = 0
+
+    while (left < right) {
+        const width = right - left;
+        const minHeight = Math.min(heights[right], heights[left])
+        const area = width * minHeight
+        maxArea = Math.max(maxArea, area)
+
+        // Move the pointer that has the shorter height
+        if (heights[left] < heights[right]) {
+            left++
+        } else {
+            right++
+        }
+    }
+
+    return maxArea
 }
