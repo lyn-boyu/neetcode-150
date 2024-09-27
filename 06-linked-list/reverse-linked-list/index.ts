@@ -34,7 +34,17 @@ class ListNode {
 }
 
 export function reverseList(head: ListNode | null): ListNode | null {
-    return null
+    let current = head
+    let prev = null
+
+    while (current) {
+        const next = current.next // Save the next node
+        current.next = prev // Reverse the pointer
+        prev = current  // Move prev forward
+        current = next // Move curr forward
+    }
+    // When current becomes null, prev will be pointing to the new head of the reversed list
+    return prev
 }
 
 export { ListNode };
