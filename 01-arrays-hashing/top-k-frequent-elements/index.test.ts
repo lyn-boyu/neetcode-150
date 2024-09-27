@@ -6,7 +6,6 @@ describe("Top K Frequent Elements", () => {
         const nums = [1, 2, 2, 3, 3, 3];
         const k = 2;
         const result = topKFrequent(nums, k);
-
         expect(result.every(num => {
             return [3, 2].includes(num)
         }))
