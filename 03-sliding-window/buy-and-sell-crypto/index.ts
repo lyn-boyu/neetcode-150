@@ -24,5 +24,16 @@
  */
 
 export function maxProfit(prices: number[]): number {
-    return -1;
+    let maxProfit = 0
+    let minPrice = Number.POSITIVE_INFINITY
+
+    for (let price of prices) {
+        if (price < minPrice) {
+            minPrice = price
+        } else {
+            maxProfit = Math.max(price - minPrice, maxProfit)
+        }
+    }
+
+    return maxProfit;
 }
