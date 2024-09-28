@@ -33,24 +33,34 @@
  */
 
 class MinStack {
-    constructor() {
+    private stack: number[] = []
+    private minStack: number[] = []
 
+    constructor() {
+        this.stack = []
+        this.minStack = []
     }
 
     push(val: number): void {
-
+        this.stack.push(val)
+        if (this.minStack.length === 0 || this.getMin() >= val) {
+            this.minStack.push(val)
+        }
     }
 
     pop(): void {
-
+        const removed = this.stack.pop()
+        if (removed === this.getMin()) {
+            this.minStack.pop()
+        }
     }
 
     top(): number {
-        return -1
+        return this.stack[this.stack.length - 1]
     }
 
     getMin(): number {
-        return -1
+        return this.minStack[this.minStack.length - 1]
     }
 }
 
