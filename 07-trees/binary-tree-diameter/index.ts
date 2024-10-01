@@ -52,5 +52,20 @@ export class TreeNode {
 }
 
 export function diameterOfBinaryTree(root: TreeNode | null): number {
-    return -1
+    let diameter = 0;
+
+    const depth = (root: TreeNode | null): number => {
+        if (!root) return 0
+
+        const rightDepth = depth(root.right)
+        const leftDepth = depth(root.left)
+
+        diameter = Math.max(diameter, rightDepth + leftDepth)
+
+        return Math.max(rightDepth, leftDepth) + 1
+    }
+
+    depth(root)
+
+    return diameter
 }
