@@ -62,5 +62,15 @@ export class TreeNode {
 }
 
 export function invertTree(root: TreeNode | null): TreeNode | null {
-    return null;
+    if (!root) return root
+
+    // Store the reference to the current left subtree
+    const left = root.left
+
+    // Recursively invert the right subtree and assign it to the left child of the current root
+    root.left = invertTree(root.right)
+    // Recursively invert the stored left subtree and assign it to the right child of the current root
+    root.right = invertTree(left)
+
+    return root;
 }
