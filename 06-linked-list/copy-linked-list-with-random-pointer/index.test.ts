@@ -1,11 +1,11 @@
 import { describe, it, expect } from "bun:test";
-import { Node, copyRandomList } from "./index";
+import { ListNode, copyRandomList } from "./index";
 
 // Helper function to create a linked list with random pointers
-function createLinkedList(values: number[], randomIndices: (number | null)[]): Node | null {
+function createLinkedList(values: number[], randomIndices: (number | null)[]): ListNode | null {
     if (values.length === 0) return null;
 
-    const nodes = values.map(val => new Node(val));
+    const nodes = values.map(val => new ListNode(val));
     for (let i = 0; i < nodes.length - 1; i++) {
         nodes[i].next = nodes[i + 1];
     }
@@ -20,9 +20,9 @@ function createLinkedList(values: number[], randomIndices: (number | null)[]): N
 }
 
 // Helper function to convert a linked list to an array representation for easier comparison
-function linkedListToArray(head: Node | null): [number, number | null][] {
+function linkedListToArray(head: ListNode | null): [number, number | null][] {
     const result: [number, number | null][] = [];
-    const nodeToIndex = new Map<Node, number>();
+    const nodeToIndex = new Map<ListNode, number>();
     let current = head;
     let index = 0;
 
