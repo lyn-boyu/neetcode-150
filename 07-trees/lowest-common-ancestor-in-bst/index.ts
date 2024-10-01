@@ -57,5 +57,22 @@ export class TreeNode {
 }
 
 export function lowestCommonAncestor(root: TreeNode | null, p: TreeNode, q: TreeNode): TreeNode | null {
-    return null
+    // 1. Edge cases: handle if root is null
+    // 1.1 If root is null, return null as there's no LCA possible
+    if (root === null) {
+        return null
+    }
+
+    // 2. BST properties: traverse based on value comparison
+    // 2.1 If both p and q are greater than root, LCA must be in the right subtree
+    if (q.val > root.val && p.val > root.val) {
+        return lowestCommonAncestor(root.right, p, q)
+    }
+    // 2.2 If both p and q are less than root, LCA must be in the left subtree
+    if (p.val < root.val && q.val < root.val) {
+        return lowestCommonAncestor(root.left, p, q);
+    }
+
+    // 3. LCA found: root is between p and q, or equal to one of them
+    return root;
 }
