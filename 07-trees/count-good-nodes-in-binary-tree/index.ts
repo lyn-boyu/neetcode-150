@@ -53,5 +53,26 @@ export class TreeNode {
 }
 
 export function goodNodes(root: TreeNode | null): number {
-    return -1
+
+    const countGoodNodes = (node: TreeNode | null, maxSoFar: number) => {
+        if (node === null) {
+            return 0
+        }
+
+        let count = 0;
+
+        if (node.val >= maxSoFar) {
+            count = 1
+        }
+
+        maxSoFar = Math.max(maxSoFar, node.val)
+
+        count += countGoodNodes(node.left, maxSoFar)
+        count += countGoodNodes(node.right, maxSoFar);
+
+        return count
+    }
+
+
+    return countGoodNodes(root, root!.val)
 }
