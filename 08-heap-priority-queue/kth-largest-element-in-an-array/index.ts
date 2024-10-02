@@ -23,5 +23,17 @@
  */
 
 export function findKthLargest(nums: number[], k: number): number {
-    return -1
+    const minHeap: number[] = []
+
+    for (let num of nums) {
+        if (minHeap.length < k) {
+            minHeap.push(num)
+        } else if (minHeap[0] < num) {
+            minHeap[0] = num
+        }
+
+        minHeap.sort((a, b) => a - b)
+    }
+
+    return minHeap[0]
 }
