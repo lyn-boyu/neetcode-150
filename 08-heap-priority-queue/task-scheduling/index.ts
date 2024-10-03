@@ -74,25 +74,25 @@ export function leastInterval(tasks: string[], n: number): number {
 
     // 2.2: Calculate initial idle slots needed based on the most frequent task
     // (maxFrequency - 1) groups, each requiring n idle slots
-    let idleSlots = (maxFrequency - 1) * n;
+    let bucketSlots = (maxFrequency - 1) * n;
 
     // Step 3: Update Idle Slots
     // 3.1: Use other tasks to fill idle slots
-    for (let i = 1; i < taskCount.length && idleSlots > 0; i++) {
+    for (let i = 1; i < taskCount.length && bucketSlots > 0; i++) {
         const currentTaskCount = taskCount[i];
-        const maxFillableSlots = maxFrequency - 1;
+        const bucketCount = maxFrequency - 1;
 
         // Fill idle slots with as many of the current task as possible
-        if (currentTaskCount >= maxFillableSlots) {
-            idleSlots -= maxFillableSlots;
+        if (currentTaskCount >= bucketCount) {
+            bucketSlots -= bucketCount;
         } else {
-            idleSlots -= currentTaskCount;
+            bucketSlots -= currentTaskCount;
         }
     }
 
     // 3.2: Ensure idle slots are not negative
-    idleSlots = Math.max(idleSlots, 0);
+    bucketSlots = Math.max(bucketSlots, 0);
 
     // Step 4: Return total time needed to complete all tasks
-    return tasks.length + idleSlots;
+    return tasks.length + bucketSlots;
 }
