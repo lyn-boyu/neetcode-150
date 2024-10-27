@@ -37,7 +37,39 @@ class ListNode {
 }
 
 export function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
-    return null
+    // Step1: handle edge cases
+    if (!lists.length) return null
+
+    // Step2: merge list using a min heap
+    // 2.1 init heap
+    const minHeap: ListNode[] = []
+
+    // 2.2 initialize the heap with the head of each list
+    for (let head of lists) {
+        if (head) minHeap.push(head)
+    }
+    // 2.3 keep heap  in asc order
+    minHeap.sort((a, b) => a.val - b.val)
+
+    // setup a dummy head for the reuslt 
+    const dummy = new ListNode(0);
+    let current = dummy;
+
+    // traverse minheap 
+    while (minHeap.length > 0) {
+        // link smallest node to dummy list
+        const smallestNode = minHeap.shift()!;
+        current.next = smallestNode;
+        current = current.next
+        // push next node to heap and keep in order
+        if (smallestNode.next) {
+            minHeap.push(smallestNode.next);
+            minHeap.sort((a, b) => a.val - b.val)
+        }
+    }
+
+    // Step 3: return the merged list 
+    return dummy.next
 }
 
 export { ListNode };
