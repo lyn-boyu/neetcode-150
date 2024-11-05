@@ -37,39 +37,38 @@ class ListNode {
 }
 
 export function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
-    // Step1: handle edge cases
-    if (!lists.length) return null
+    // Step 1: Handle edge case - if the list is empty, return null
+    if (lists.length === 0) return null;
 
-    // Step2: merge list using a min heap
-    // 2.1 init heap
-    const minHeap: ListNode[] = []
+    // Step 2: Use a min-heap (simulated with a sorted array) to merge the lists
+    // 2.1 Initialize an empty heap
+    const minHeap: ListNode[] = [];
 
-    // 2.2 initialize the heap with the head of each list
+    // 2.2 Add the head of each list to the heap
     for (let head of lists) {
-        if (head) minHeap.push(head)
+        if (head) minHeap.push(head);
     }
-    // 2.3 keep heap  in asc order
-    minHeap.sort((a, b) => a.val - b.val)
+    // 2.3 Sort the heap by node values to maintain ascending order
+    minHeap.sort((a, b) => a.val - b.val);
 
-    // setup a dummy head for the reuslt 
+    // Step 3: Set up a dummy head for the result list
     const dummy = new ListNode(0);
     let current = dummy;
 
-    // traverse minheap 
+    // Step 4: Process the heap until all nodes are merged
     while (minHeap.length > 0) {
-        // link smallest node to dummy list
+        // 4.1 Extract the smallest node from the heap and add it to the result list
         const smallestNode = minHeap.shift()!;
         current.next = smallestNode;
-        current = current.next
-        // push next node to heap and keep in order
+        current = current.next;
+
+        // 4.2 If the extracted node has a next node, add it to the heap and re-sort
         if (smallestNode.next) {
             minHeap.push(smallestNode.next);
-            minHeap.sort((a, b) => a.val - b.val)
+            minHeap.sort((a, b) => a.val - b.val);
         }
     }
 
-    // Step 3: return the merged list 
-    return dummy.next
+    // Step 5: Return the merged list starting from dummy.next
+    return dummy.next;
 }
-
-export { ListNode };
