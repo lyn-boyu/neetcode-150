@@ -92,17 +92,15 @@ export class Codec {
 
             // 3.1 Build the left child
             if (values[i] !== "null") {
-                const leftNode = new TreeNode(parseInt(values[i]));
-                node!.left = leftNode;
-                queue.push(leftNode);
+                node!.left = new TreeNode(parseInt(values[i]));;
+                queue.push(node!.left);
             }
             i++;
 
             // 3.2 Build the right child (ensure there are values remaining)
             if (i < values.length && values[i] !== "null") {
-                const rightNode = new TreeNode(parseInt(values[i]));
-                node!.right = rightNode;
-                queue.push(rightNode);
+                node!.right = new TreeNode(parseInt(values[i]));;
+                queue.push(node!.right);
             }
             i++;
         }
