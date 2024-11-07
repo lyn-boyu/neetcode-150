@@ -27,5 +27,38 @@
  */
 
 export function letterCombinations(digits: string): string[] {
-    return []
+    // Step1: define digitToChar mapping
+    const digitToChar: Record<string, string[]> = {
+        '2': ['a', 'b', 'c'],
+        '3': ['d', 'e', 'f'],
+        '4': ['g', 'h', 'i'],
+        '5': ['j', 'k', 'l'],
+        '6': ['m', 'n', 'o'],
+        '7': ['p', 'q', 'r', 's'],
+        '8': ['t', 'u', 'v'],
+        '9': ['w', 'x', 'y', 'z'],
+    }
+
+    // Step2: edge cases
+    if (digits.length === 0) {
+        return []
+    }
+
+    // Step3: define backtracking function to iter through digits
+    const result: string[] = []
+    function backtrack(idx: number, path: string) {
+        if (path.length === digits.length) {
+            result.push(path)
+            return // * aborted explore
+        }
+
+        const currentDigit = digits[idx];
+        for (let char of digitToChar[currentDigit]) {
+            backtrack(idx + 1, path + char)
+        }
+
+    }
+
+    backtrack(0, '')
+    return result
 }
