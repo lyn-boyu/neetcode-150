@@ -26,5 +26,5 @@ function isPalindrome(str: string, left: number, right: number): boolean {
 
 
 export function partition(s: string): string[][] {
-   
+    return []
 }
