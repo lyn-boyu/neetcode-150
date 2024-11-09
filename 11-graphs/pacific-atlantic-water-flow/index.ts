@@ -33,7 +33,58 @@
  */
 
 export function pacificAtlantic(heights: number[][]): number[][] {
-    return []
+    const result: number[][] = [];
+    const rows = heights.length;
+    const cols = heights[0] ? heights[0].length : 0;
+    const pacificReachable = Array.from({ length: rows }, () => Array(cols).fill(false));
+    const atlanticReachable = Array.from({ length: rows }, () => Array(cols).fill(false));
+    const directions = [
+        [1, 0],   // Down
+        [-1, 0],  // Up
+        [0, 1],   // Right
+        [0, -1]   // Left
+    ];
+
+    // Step 1: Define the DFS helper function for exploring reachable cells
+    function dfs(row: number, col: number, reachable: boolean[][]) {
+        reachable[row][col] = true; // Mark the current cell as reachable
+
+        for (let [dr, dc] of directions) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+
+            // Check if the new cell is within bounds, not visited, and can be reached from the current cell
+            if (
+                newRow >= 0 && newRow < rows &&
+                newCol >= 0 && newCol < cols &&
+                !reachable[newRow][newCol] &&
+                heights[newRow][newCol] >= heights[row][col] // Ensure the new cell's height is not less
+            ) {
+                dfs(newRow, newCol, reachable); // Recursively visit the new cell
+            }
+        }
+    }
+
+    // Step 2: Run DFS from the borders (Pacific and Atlantic)
+    // Traverse rows for the left (Pacific) and right (Atlantic) sides
+    for (let row = 0; row < rows; row++) {
+        dfs(row, 0, pacificReachable); // Left border (Pacific)
+        dfs(row, cols - 1, atlanticReachable); // Right border (Atlantic)
+    }
+    // Traverse columns for the top (Pacific) and bottom (Atlantic) sides
+    for (let col = 0; col < cols; col++) {
+        dfs(0, col, pacificReachable); // Top border (Pacific)
+        dfs(rows - 1, col, atlanticReachable); // Bottom border (Atlantic)
+    }
+
+    // Step 3: Collect cells that are reachable by both Pacific and Atlantic
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (pacificReachable[r][c] && atlanticReachable[r][c]) {
+                result.push([r, c]);
+            }
+        }
+    }
+
+    return result;
 }
-
-
