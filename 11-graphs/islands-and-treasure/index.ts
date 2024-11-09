@@ -48,6 +48,46 @@
  */
 
 function fillLandWithDistanceToTreasure(grid: number[][]): void {
+    // Step 1: Setup variables
+    const rows = grid.length;
+    const cols = grid[0] ? grid[0].length : 0;
+    const queue: number[][] = [];
+    const directions = [
+        [1, 0],  // Down
+        [-1, 0], // Up
+        [0, 1],  // Right
+        [0, -1]  // Left
+    ];
 
+    // Step 2: Find all treasure chests on the map and add them to the queue
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (grid[r][c] === 0) {
+                queue.push([r, c]); // Push coordinates (column, row)
+            }
+        }
+    }
+
+    // Step 3: Perform BFS from all treasure chests and update surrounding land cell distances
+    while (queue.length > 0) {
+        const [r, c] = queue.shift()!; // Dequeue the front element
+
+        for (let [dr, dc] of directions) {
+            const newRow = r + dr;
+            const newCol = c + dc;
+
+            // Check bounds and if the new cell is traversable land (INF)
+            if (
+                newCol >= 0 && newCol < cols &&
+                newRow >= 0 && newRow < rows &&
+                grid[newRow][newCol] === 2147483647 // Check if the cell is unvisited land
+            ) {
+                // Update the distance to the nearest treasure chest
+                grid[newRow][newCol] = grid[r][c] + 1;
+                queue.push([newRow, newCol]); // Enqueue the new cell for further exploration
+            }
+        }
+    }
 }
+
 export { fillLandWithDistanceToTreasure };
