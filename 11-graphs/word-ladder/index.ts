@@ -29,5 +29,38 @@
  */
 
 export function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
-    return -1
+    // Step 1: Initialize the data structures and perform base case check
+    const aCharCode = 'a'.charCodeAt(0);
+    const zCharCode = 'z'.charCodeAt(0);
+    const wordSet = new Set(wordList);
+    if (!wordSet.has(endWord)) return 0;
+
+    // Step 2: Use BFS to find the shortest transformation path
+    const queue: [string, number][] = [[beginWord, 1]]; // Store current word and step count
+    const visited = new Set([beginWord]);
+
+    while (queue.length > 0) {
+        const [currentWord, depth] = queue.shift()!;
+
+        // Step 2.1: Generate new words by changing one character at a time
+        for (let i = 0; i < currentWord.length; i++) {
+            for (let charCode = aCharCode; charCode <= zCharCode; charCode++) {
+                const newWord = currentWord.slice(0, i) + String.fromCharCode(charCode) + currentWord.slice(i + 1);
+
+                // Step 2.2: Check if the generated word matches `endWord`
+                if (newWord === endWord) {
+                    return depth + 1; // Return current step count + 1 as the result
+                }
+
+                // Step 2.3: Check if the new word is in the word list and not visited
+                if (wordSet.has(newWord) && !visited.has(newWord)) {
+                    visited.add(newWord);
+                    queue.push([newWord, depth + 1]);
+                }
+            }
+        }
+    }
+
+    // Step 3: Return 0 if no valid transformation path is found
+    return 0;
 }
