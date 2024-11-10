@@ -28,7 +28,33 @@
  * - 1 <= edges[i][0] < edges[i][1] <= n
  * - No repeated edges and no self-loops in the input.
  */
-
 export function findRedundantConnection(edges: number[][]): number[] {
-    return []
+    // Step 1: Initialize the union-find data structure
+    const parent = Array.from({ length: edges.length + 1 }, (_, i) => i);
+
+    // Step 2: Define the find function for path compression
+    function find(node: number): number {
+        if (parent[node] !== node) {
+            parent[node] = find(parent[node]); // Path compression
+        }
+        return parent[node];
+    }
+
+    // Step 3: Iterate over each edge and check for cycles
+    for (let [u, v] of edges) {
+        const rootU = find(u);
+        const rootV = find(v);
+
+        // If both nodes have the same root, they are in the same connected component,
+        // and connecting them would create a cycle.
+        if (rootU === rootV) {
+            return [u, v]; // This edge is redundant and creates a cycle
+        }
+
+        // Union operation: connect the components by linking rootU to rootV
+        parent[rootU] = rootV;
+    }
+
+    // No redundant connection found (should not reach here based on problem constraints)
+    return [];
 }
