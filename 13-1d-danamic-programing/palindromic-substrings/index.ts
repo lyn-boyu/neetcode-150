@@ -23,8 +23,46 @@
  */
 
 export function countSubstrings(s: string): number {
-    return -1
+    const n = s.length;
+    let count = 0
+    
+    // Helper function to check if a substring is a palindrome using a while loop.
+    function checkPalindromeByWhileLoop(left: number, right: number) {
+        while (s[left] === s[right] && left < right) {
+            left++;
+            right--
+        }
+        if (left >= right) {
+            count += 1
+        }
+    }
+
+    const dp: boolean[][] = Array.from({ length: n }, () => Array(n).fill(false));
+    //  Fills the DP table to mark substrings as palindromes and count them.
+    function fillDpTable(l: number, r: number) {
+        if (s[l] !== s[r]) return
+
+        // Check if the inner substring (s[l+1...r-1]) is a palindrome.
+        if (dp[l + 1][r - 1]) {
+            dp[l][r] = true;
+            count += 1
+        }
+
+        // Handle special cases: single character 'a', two characters 'aa', three characters 'aba'.
+        if (r - l <= 2) {
+            dp[l][r] = true;
+            count += 1
+        }
+    }
+
+
+    for (let l = n - 1; l >= 0; l--) {
+        for (let r = l; r < n; r++) {
+            fillDpTable(l, r); // Alternatively, call checkPalindromeByWhileLoop(l, r)
+        }
+    }
+
+    return count
 }
 
 
- 
